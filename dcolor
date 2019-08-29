@@ -17,11 +17,12 @@
 ##
 
 DC_ROOT=~/.dcolor
-
-THEME=$(cat ${DC_ROOT}/current)
+THEME=$1
 IN_TMUX="no"
-[ ! -z $1 ] && THEME=$1
-[ ! -z $TMUX ] && IN_TMUX="yes"
+
+[ -z $TMUX ] || IN_TMUX="yes"
+[ -f ${DC_ROOT}/current ] || echo "nord" > ${DC_ROOT}/current
+[ -z $THEME ] && THEME=$(cat ${DC_ROOT}/current)
 
 PROCESS_THEME=$(cat <<EOF
 BEGIN {
