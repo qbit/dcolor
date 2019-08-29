@@ -1,0 +1,62 @@
+#!/bin/sh
+
+##
+## Copyright (c) 2019 Aaron Bieber <aaron@bolddaemon.com>
+##
+## Permission to use, copy, modify, and distribute this software for any
+## purpose with or without fee is hereby granted, provided that the above
+## copyright notice and this permission notice appear in all copies.
+##
+## THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+## WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+## MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+## ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+## WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+## ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+## OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+##
+
+DC_ROOT=~/.dcolor
+
+THEME=$(cat ${DC_ROOT}/current)
+IN_TMUX="no"
+[ ! -z $1 ] && THEME=$1
+[ ! -z $TMUX ] && IN_TMUX="yes"
+
+PROCESS_THEME=$(cat <<EOF
+BEGIN {
+	esc = "\\033"
+	bel = "\\007"
+	bsbs = "\\\\\\\\"
+	dsc = esc "P"
+	osc = esc "]"
+}
+
+function print_esc(a, b) {
+	if (tmux == "yes") {
+		print dsc "tmux;" esc osc a ";" b bel esc bsbs
+	} else {
+		print osc a ";" b bel
+	}
+}
+
+{
+	gsub("\"", "", \$2)
+	if (\$1 == "background") { print_esc(11, \$2) }
+	if (\$1 == "foreground") { print_esc(10, \$2) }
+	if (\$1 == "cursor") { print_esc(12, \$2) }
+	if (\$1 == "mouse_foreground") { print_esc(13, \$2) }
+	if (\$1 == "highlight") { print_esc(17, \$2) }
+	if (\$1 == "border") { print_esc(708, \$2) }
+	if (\$1 ~ "^color") { 
+		sub("color", "", \$1)
+		print_esc(4, \$1 ";" \$2)
+	}
+}
+EOF
+)
+
+for l in $(awk -v theme=${THEME} -v tmux=${IN_TMUX} -F= "${PROCESS_THEME}"\
+	"${DC_ROOT}/themes/${THEME}"); do
+	printf $l
+done

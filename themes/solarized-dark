@@ -1,0 +1,36 @@
+# Solarized colorscheme "dark"
+#
+# See the Solarized homepage for details:
+# http://ethanschoonover.com/solarized
+
+background="#002b36"
+foreground="#839496"
+cursor="#93a1a1"
+mouse_background="#073642"
+mouse_foreground="#93a1a1"
+highlight="#073642"
+border="#002b36"
+
+color0="#073642"  # black
+color8="#002b36"  # brblack
+
+color1="#dc322f"     # red
+color9="#cb4b16"  # brred
+
+color2="#859900"   # green
+color10="#586e75"  # brgreen
+
+color3="#b58900"  # yellow
+color11="#657b83"  # bryellow
+
+color4="#268bd2"    # blue
+color12="#839496"   # brblue
+
+color5="#d33682" # magenta
+color13="#6c71c4"  # brmagenta
+
+color6="#2aa198"    # cyan
+color14="#93a1a1"   # brcyan
+
+color7="#eee8d5"   # white
+color15="#fdf6e3"   # brwhite
