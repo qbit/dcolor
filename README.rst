@@ -1,5 +1,5 @@
 dcolor
 ======
 
-Minimalistic script to dynamically them terminals.
+Minimal script to dynamically theme terminals.
 
