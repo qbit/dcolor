@@ -22,7 +22,12 @@ IN_TMUX="no"
 
 [ -z $TMUX ] || IN_TMUX="yes"
 [ -f ${DC_ROOT}/current ] || echo "nord" > ${DC_ROOT}/current
-[ -z $THEME ] && THEME=$(cat ${DC_ROOT}/current)
+
+if [ -z $THEME ]; then
+	THEME=$(cat ${DC_ROOT}/current)
+else
+	echo "${THEME}" > ${DC_ROOT}/current
+fi
 
 PROCESS_THEME=$(cat <<EOF
 BEGIN {
@@ -49,7 +54,7 @@ function print_esc(a, b) {
 	if (\$1 == "mouse_foreground") { print_esc(13, \$2) }
 	if (\$1 == "highlight") { print_esc(17, \$2) }
 	if (\$1 == "border") { print_esc(708, \$2) }
-	if (\$1 ~ "^color") { 
+	if (\$1 ~ "^color") {
 		sub("color", "", \$1)
 		print_esc(4, \$1 ";" \$2)
 	}
