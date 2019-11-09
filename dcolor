@@ -16,7 +16,6 @@
 ## OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ##
 
-DC_STATUS=/tmp/.dcolor
 DC_ROOT=~/.dcolor
 THEME=$1
 IN_TMUX="no"
@@ -28,12 +27,6 @@ if [ -z $THEME ]; then
 	THEME=$(cat ${DC_ROOT}/current)
 else
 	echo "${THEME}" > ${DC_ROOT}/current
-fi
-
-if [ -f ${DC_STATUS} ]; then
-	if [ "$(cat ${DC_STATUS})" == "${THEME}" ]; then
-		exit 0
-	fi
 fi
 
 PROCESS_THEME=$(cat <<EOF
@@ -73,5 +66,3 @@ for l in $(awk -v theme=${THEME} -v tmux=${IN_TMUX} -F= "${PROCESS_THEME}"\
 	"${DC_ROOT}/themes/${THEME}"); do
 	printf $l
 done
-
-echo "${THEME}" > "${DC_STATUS}"
